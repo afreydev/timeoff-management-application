@@ -28,13 +28,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Deploy'
-      uses: 'deliverybot/helm@v3.0.0'
-      with:
-        release: 'timeoff'
-        namespace: 'default'
-        chart: 'helm/timeoff'
-        values: |
-          image:
-            tag: ${{ github.run_id }}
-      env:
-        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
+        uses: 'deliverybot/helm@v3.0.0'
+        with:
+          release: 'timeoff'
+          namespace: 'default'
+          chart: 'helm/timeoff'
+          values: |
+            image:
+              tag: ${{ github.run_id }}
+        env:
+          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
