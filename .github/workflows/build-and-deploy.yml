@@ -33,7 +33,7 @@ jobs:
           echo ${{secrets.AWS_CREDENTIALS}} > $HOME/.aws/credentials
       - name: Create kube config
         run: |
-          aws eks --region ${{secrets.AWS_REGION}} update-kubeconfig --name ${{AWS_CLUSTER_NAME}}
+          aws eks --region ${{secrets.AWS_REGION}} update-kubeconfig --name ${{secrets.AWS_CLUSTER_NAME}}
       - name: Deploy
         run: |
           helm upgrade --install --atomic timeoff ./helm/timeoff/ \
