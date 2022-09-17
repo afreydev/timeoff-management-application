@@ -27,14 +27,22 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: 'Deploy'
-        uses: 'deliverybot/helm@v1'
-        with:
-          release: 'timeoff'
-          namespace: 'default'
-          chart: 'helm/timeoff'
-          values: |
-            image:
-              tag: ${{ github.run_id }}
+      - name: Create kube config
+        run: |
+          mkdir -p $HOME/.kube/
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+      - name: Install helm
+        run: |
+          curl -LO https://get.helm.sh/helm-v3.8.0-linux-amd64.tar.gz
+          tar -zxvf helm-v3.8.0-linux-amd64.tar.gz
+          mv linux-amd64/helm /usr/local/bin/helm
+          helm version
+      - name: Lint helm charts
+        run: helm lint ./infra/helm/
+      - name: Deploy
+        run: |
+          helm upgrade --install --atomic timeoff ./helm/timeoff/ \
+            --set image.tag=${{ github.run_id }}
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
