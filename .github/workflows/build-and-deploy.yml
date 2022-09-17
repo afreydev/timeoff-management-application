@@ -30,7 +30,7 @@ jobs:
       - name: Set aws credentials
         run: |
           mkdir -p $HOME/.aws/
-          echo ${{secrets.AWS_CREDENTIALS}} > $HOME/.aws/credentials
+          echo "${{secrets.AWS_CREDENTIALS}}" > $HOME/.aws/credentials
       - name: Create kube config
         run: |
           aws eks --region ${{secrets.AWS_REGION}} update-kubeconfig --name ${{secrets.AWS_CLUSTER_NAME}}
