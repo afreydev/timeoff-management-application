@@ -27,6 +27,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Set aws credentials
         run: |
           mkdir -p $HOME/.aws/
